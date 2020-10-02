@@ -1,6 +1,7 @@
 import 'package:sqflite/sqlite_api.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:sql_app/model/user_model.dart';
 
 class DBProvider {
   DBProvider._();
@@ -25,7 +26,7 @@ class DBProvider {
     }, version: 1);
   }
 
-  newUser(newUser) async {
+  newUser(User newUser) async {
     final db = await database;
     var res = await db.rawInsert('''
 
@@ -33,13 +34,13 @@ class DBProvider {
       username, password
     ) VALUES (?, ?)
     
-     ''', [newUser.username, newUser.password]);
+     ''', [newUser.userName, newUser.password]);
     return res;
   }
 
   Future<dynamic> getUser() async {
     final db = await database;
-    var res = await db.query('''user''');
+    var res = await db.query('''users''');
     if (res.length == 0) {
       return null;
     } else {
